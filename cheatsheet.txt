@@ -1,0 +1,27 @@
+#Git Pull changes steps:
+git pull origin master
+
+#Activate virtual environment:
+#[For MacOS or Linux]
+source env/bin/activate
+#For[Windows]
+env\Scripts\activate
+
+#Install New Requirements:
+pip install -r requirements.txt
+
+#Create Migrations:
+python manage.py makemigrations
+
+#Apply Migrations:
+python manage.py migrate
+
+#Build React Native app:
+npm run dev
+
+#Clear Migrations file:
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+
+#To Update requirements.txt file [while virtualenv active]:
+pip freeze > requirements.txt

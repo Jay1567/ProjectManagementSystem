@@ -3,7 +3,7 @@
 ---
 ### _Downloads_
 
-Download [Python](https://www.python.org/downloads/release/python-397/)  [Preferably Python 3.9]
+Download [Python](https://www.python.org/downloads/release/python-397/)  [Preferably Python 3.8]
 
 Download [Node.js](https://nodejs.org/en/)
 
@@ -13,10 +13,13 @@ Download [Node.js](https://nodejs.org/en/)
 mkdir ProjectManagementSystem 
 cd ProjectManagementSystem/
 
-#Create a virtual enviornment 
+#Clone Repo
+git clone https://github.com/Jay1567/ProjectManagementSystem.git
+
+#Create a virtual environment 
 virtualenv env
 
-#Activate virtual enviornment
+#Activate virtual environment
 #[For MacOS or Linux]
 source env/bin/activate
 #For[Windows]
@@ -55,4 +58,21 @@ npm run build
 #To run Django server [from base directory]:
 cd ProjectManagementSystem-Project/
 python manage.py runserver
+```
+
+Create .env file locally to save credentials 
+```shell
+cd ProjectManagementSystem-Project
+touch .env 
+```
+
+.env file:
+```shell
+SECRET_KEY=django-insecure-ij7kpqt^9xw679mgn^&x(ev)l)i+een6)gy$p5p8zpbozb+$4-
+DEBUG=True
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB_NAME=<DATABASE_NAME>
+POSTGRES_USER=<POSTGRES_USER>
+POSTGRES_PWD=<POSTGRES_PASSWORD>
 ```
