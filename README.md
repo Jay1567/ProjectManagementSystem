@@ -60,6 +60,12 @@ cd ProjectManagementSystem-Project/
 python manage.py runserver
 ```
 
+[React App: localhost:8000/](localhost:8000/)
+
+[Django Admin Panel: localhost:8000/admin](localhost:8000/admin)
+
+[View APIs: localhost:8000/api/v1/](localhost:8000/api/v1/)
+
 Create .env file locally to save credentials 
 ```shell
 cd ProjectManagementSystem-Project
@@ -75,4 +81,8 @@ POSTGRES_PORT=5432
 POSTGRES_DB_NAME=<DATABASE_NAME>
 POSTGRES_USER=<POSTGRES_USER>
 POSTGRES_PWD=<POSTGRES_PASSWORD>
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+EMAIL_HOST=
+EMAIL_PORT=465
+EMAIL_USE_TLS=True
 ```

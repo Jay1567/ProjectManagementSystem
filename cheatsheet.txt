@@ -1,27 +1,37 @@
-#Git Pull changes steps:
+# Git Pull changes steps:
 git pull origin master
 
-#Activate virtual environment:
-#[For MacOS or Linux]
+# Activate virtual environment:
+# [For MacOS or Linux]
 source env/bin/activate
-#For[Windows]
+# For[Windows]
 env\Scripts\activate
 
-#Install New Requirements:
+# Install New Requirements:
 pip install -r requirements.txt
 
-#Create Migrations:
+# Create Migrations:
 python manage.py makemigrations
 
-#Apply Migrations:
+# Apply Migrations:
 python manage.py migrate
 
-#Build React Native app:
+# Build React Native app:
 npm run dev
 
-#Clear Migrations file:
+# Run Django Server:
+python manage.py runserver
+
+React App: localhost:8000/
+Django Admin Panel: localhost:8000/admin
+View APIs: http://localhost:8000/api/v1/
+
+# Clear Migrations file:
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/migrations/*.pyc"  -delete
 
-#To Update requirements.txt file [while virtualenv active]:
+# To Update requirements.txt file [while virtualenv active]:
 pip freeze > requirements.txt
+
+# To create superuser [for django admin panel login]
+python manage.py createsuperuser
