@@ -70,7 +70,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 # Make email verification mandatory to avoid junk email accounts
 ACCOUNT_EMAIL_VERIFICATION = 'optional'  # 'mandatory'
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = None
+# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = None
 
 # Eliminate need to provide username
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
