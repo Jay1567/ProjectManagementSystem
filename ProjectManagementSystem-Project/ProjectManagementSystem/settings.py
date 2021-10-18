@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import environ
 import os
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,9 +60,71 @@ INSTALLED_APPS = [
     # Apps
     'frontend',
     'accounts',
+
+    #For otp login
+    'phonenumber_field',
+    'drfpasswordless',
+]
+AUTHENTICATION_BACKENDS = [
+    # allauth specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # Needed to login by username in Django admin, regardless of allauth
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
+REST_FRAMEWORK = { #( REST Framework Settings )
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #  'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        #  'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+}
+
+# JWT token settings
+# REST_USE_JWT = True
+# JWT_AUTH_COOKIE = 'my-app-auth'
+# JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+
+
 SITE_ID = 1
+
+
+#-------------------------------Settings for OTP-PASSWORDLESS authentication------------------------------ 
+
+PASSWORDLESS_AUTH = {
+    # Allowed auth types, can be EMAIL, MOBILE, or both.
+    'PASSWORDLESS_AUTH_TYPES': ['MOBILE','EMAIL'],
+    'PASSWORDLESS_EMAIL_NOREPLY_ADDRESS': 'noreply@example.com',
+    'PASSWORDLESS_EMAIL_SUBJECT': "Your Login Token",
+    'PASSWORDLESS_EMAIL_PLAINTEXT_MESSAGE': "Enter this token to sign in: %s",
+    'PASSWORDLESS_EMAIL_TOKEN_HTML_TEMPLATE_NAME': "passwordless_default_token_email.html",
+
+    # URL Prefix for Authentication Endpoints
+    'PASSWORDLESS_AUTH_PREFIX': '',
+    
+    # Amount of time that tokens last, in seconds
+    'PASSWORDLESS_TOKEN_EXPIRE_TIME': 10 * 60,
+
+    # The user's mobile field name
+    'PASSWORDLESS_USER_MOBILE_FIELD_NAME':'mobile',
+
+    # Marks itself as verified the first time a user completes auth via token.
+    # Automatically unmarks itself if mobile number is changed.
+    'PASSWORDLESS_USER_MARK_MOBILE_VERIFIED': True,
+    'PASSWORDLESS_USER_MOBILE_VERIFIED_FIELD_NAME': 'mobile_verified',
+
+    # Your twilio number that sends the callback tokens.
+    'PASSWORDLESS_MOBILE_NOREPLY_NUMBER':os.getenv('TWILIO_MOBILE_NO'),
+
+    # The message sent to mobile users logging in. Takes one string.
+    'PASSWORDLESS_MOBILE_MESSAGE': "\nDear User, \n%s is your OTP for logging into PM. (Remaining Time: 10 minutes and 0 seconds)",
+
+    # Token Generation Retry Count
+    'PASSWORDLESS_TOKEN_GENERATION_ATTEMPTS': 3,
+
+    'PASSWORDLESS_AUTH_TOKEN_SERIALIZER': 'accounts.serializers.CustomOTPTokenSerializer',  
+}
 
 # Custom User Account Settings
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -80,6 +143,8 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_URL = '/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = LOGIN_URL
 ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =3
+
 
 
 # Email Settings
@@ -98,6 +163,9 @@ REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
     'TOKEN_SERIALIZER': 'accounts.serializers.CustomTokenSerializer',
     'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER' : 'accounts.serializers.CustomUserPasswordResetSerializer',
+
+
 }
 
 MIDDLEWARE = [
@@ -115,7 +183,7 @@ ROOT_URLCONF = 'ProjectManagementSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

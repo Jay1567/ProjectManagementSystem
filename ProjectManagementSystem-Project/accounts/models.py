@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-
+from phonenumber_field.modelfields import PhoneNumberField
 
 class CustomManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -36,9 +36,11 @@ class CustomUser(AbstractBaseUser):
                               unique=True,
                               null=True
                               )
-    email_authenticated = models.BooleanField(default=False)
     full_name = models.CharField(max_length=128, blank=True)
+    mobile_verified = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
 
+    mobile = PhoneNumberField(null=True, unique=True, default=None)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     objects = CustomManager()
@@ -50,7 +52,10 @@ class CustomUser(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email
+        if(self.email):
+            return self.email
+        else:
+            return str(self.mobile)
 
     def get_email(self):
         return self.email
