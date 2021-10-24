@@ -59,10 +59,13 @@ INSTALLED_APPS = [
     # For otp login
     'phonenumber_field',
     'drfpasswordless',
+    'taggit',
+    'taggit_serializer',
 
     # Apps
     'frontend',
     'accounts',
+    'project',
 ]
 
 AUTHENTICATION_BACKENDS = [

@@ -9,6 +9,8 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('admin/', admin.site.urls),
 
+    path('api/v1/project/', include('project.urls')),
+
     path(api_version+'rest-auth/', include('dj_rest_auth.urls')), #login, logout and password change
     path('api/v1/rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view(),name='account_confirm_email'),
     path(api_version+'rest-auth/registration/', include('dj_rest_auth.registration.urls')),#registration
