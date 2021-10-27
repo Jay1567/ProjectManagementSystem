@@ -45,7 +45,7 @@ class CustomUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     objects = CustomManager()
 
-    is_manager = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=True)
     is_member = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'

@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
 from .models import CustomUser
-
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
+from django.contrib.auth.forms import PasswordResetForm
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -58,7 +59,26 @@ class CustomUserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'password', 'is_active', 'admin']
+        fields = ['email', 'password', 'is_active', ]
+        # fields = ['email', 'password', 'is_active', 'admin']
 
     def clean_password(self):
         return self.initial["password"]
+
+
+
+
+
+#Override this form to send reset password mail to members. By default it doesnt send reset password mail to user whose password is set as Unusable_Password. 
+class PwddResetForm(PasswordResetForm):
+    def get_users(self, email):
+        
+        email_field_name = UserModel.get_email_field_name()
+        active_users = UserModel._default_manager.filter(**{
+            '%s__iexact' % email_field_name: email,
+            'is_active': True,
+        })
+        return (
+            active_users
+        )
+
