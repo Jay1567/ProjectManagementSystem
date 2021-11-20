@@ -66,9 +66,6 @@ class CustomUserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-
-
-
 #Override this form to send reset password mail to members. By default it doesnt send reset password mail to user whose password is set as Unusable_Password. 
 class PwddResetForm(PasswordResetForm):
     def get_users(self, email):

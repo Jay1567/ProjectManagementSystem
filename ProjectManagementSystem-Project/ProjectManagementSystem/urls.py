@@ -23,8 +23,4 @@ urlpatterns = [
         path('api/v1/rest-auth/password-reset-complete/',
                 auth_views.PasswordResetCompleteView.as_view(),
                 name='password_reset_complete'),
-        path('api/v1/invite_member/',include('accounts.urls') )
-
-         
-
 ]
