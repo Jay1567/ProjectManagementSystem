@@ -30,12 +30,6 @@ function Login() {
       setSignin({...signin,[itemName]:itemValue});
   }
 
-  let config = {
-    headers: {
-      
-    }
-  }
-
   const onSubmitHandler = async (e)=>{
       e.preventDefault();
       await axios.post('http://localhost:8000/api/v1/rest-auth/login/',signin, {

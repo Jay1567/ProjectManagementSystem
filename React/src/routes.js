@@ -12,7 +12,7 @@ import Login from "Login/Login.js";
 import Signup from "Signup/Signup.js";
 import Project from "Project/Project.js";
 import Calendar from "Calendar/Calendar.js";
-
+import ViewProjects from "ViewProjects/ViewProjects.js";
 
 var routes = [
   //My Pages
@@ -42,6 +42,13 @@ var routes = [
     name: "Calendar",
     icon: "nc-icon nc-caps-small",
     component: Calendar,
+    layout: "/user",
+  },
+  {
+    path: "/ViewProjects",
+    name: "ViewProjects",
+    icon: "nc-icon nc-caps-small",
+    component: ViewProjects,
     layout: "/user",
   },
   //Default

@@ -1,5 +1,6 @@
-import React from "react";
-
+import React, { useState } from 'react';
+import {useHistory } from 'react-router-dom';
+import axios from 'axios';
 // reactstrap components
 import {
   Button,
@@ -16,6 +17,33 @@ import {
 } from "reactstrap";
 
 function Project() {
+
+  const history = useHistory();
+  const [c_project,setC_project] =useState({name:'',description:'',members:'',startDate:'',endDate:'',tags:''});
+
+  const onChangeHandler = (e) =>{
+      const itemName = e.target.name;
+      const itemValue = e.target.value;
+      setC_project({...c_project,[itemName]:itemValue});
+  }
+
+  const onSubmitHandler = async (e)=>{
+      e.preventDefault();
+      await axios.post('http://localhost:8000/api/v1/rest-auth/create_project/',c_project, {
+          "Access-Control-Allow-Origin" : "*",
+      })
+      .then((resp)=>{
+           console.log(resp.data)
+          if(resp.data.key !== null && resp.data.user !== null){
+              localStorage.setItem('token', resp.data);
+              history.push('create_project');
+          }else{
+              alert('Invalid Email Or Password');
+          }
+      })
+      .catch((error)=>console.log(error))
+      .then(setC_project({name:'',description:'',members:'',startDate:'',endDate:'',tags:''}))   
+  }
 
   return (
     <>
@@ -35,6 +63,11 @@ function Project() {
                         <Input
                           placeholder="Project Name"
                           type="text"
+                          id='projectName'
+                          name='name'
+                          onChange={onChangeHandler} 
+                          value={c_project.name}
+                          placeholder="Project Name"
                         />
                       </FormGroup>
                     </Col>
@@ -46,6 +79,11 @@ function Project() {
                         <Input
                           placeholder="Project Description"
                           type="textarea"
+                          id='projectDes'
+                          name='description'
+                          onChange={onChangeHandler} 
+                          value={c_project.description}
+                          placeholder="Project Description"
                         />
                       </FormGroup>
                     </Col>
@@ -57,6 +95,11 @@ function Project() {
                         <Input
                           placeholder="Members"
                           type="text"
+                          id='projectMem'
+                          name='members'
+                          onChange={onChangeHandler} 
+                          value={c_project.members}
+                          placeholder="Members"
                         />
                       </FormGroup>
                     </Col>
@@ -68,6 +111,11 @@ function Project() {
                         <Input
                           placeholder="Start Date"
                           type="date"
+                          id='starDate'
+                          name='startDate'
+                          onChange={onChangeHandler} 
+                          value={c_project.startDate}
+                          placeholder="Start Date"
                         />
                       </FormGroup>
                     </Col>
@@ -77,6 +125,11 @@ function Project() {
                         <Input
                           placeholder="End Date"
                           type="date"
+                          id='endDate'
+                          name='endDate'
+                          onChange={onChangeHandler} 
+                          value={c_project.endDate}
+                          placeholder="End Date"
                         />
                       </FormGroup>
                     </Col>
@@ -88,6 +141,11 @@ function Project() {
                         <Input
                           placeholder="Tags"
                           type="textarea"
+                          id='tags'
+                          name='tags'
+                          onChange={onChangeHandler} 
+                          value={c_project.tags}
+                          placeholder="Tags"
                         />
                       </FormGroup>
                     </Col>
@@ -98,6 +156,7 @@ function Project() {
                         className="btn-round"
                         color="primary"
                         type="submit"
+                        onClick={onSubmitHandler}
                       >
                         Create Project
                       </Button>

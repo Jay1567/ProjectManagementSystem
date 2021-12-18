@@ -1,5 +1,6 @@
-import React from "react";
-
+import React, { useState } from 'react';
+import {useHistory } from 'react-router-dom';
+import axios from 'axios';
 // reactstrap components
 import {
   Button,
@@ -16,6 +17,41 @@ import {
 } from "reactstrap";
 
 function Signup() {
+
+  const history = useHistory();
+  const [signup,setSignup] =useState({
+      email:'',password:'',passwordCnf:''
+  });
+
+  const onChangeHandler = (e) =>{
+      const itemName = e.target.name;
+      const itemValue = e.target.value;
+      setSignup({...signup,[itemName]:itemValue});
+  }
+
+  const onSubmitHandler = async (e)=>{
+      e.preventDefault();
+      if(signup.password===signup.passwordCnf && signup.password !== '' && signup.passwordCnf !== ''){
+        console.log(signup);
+        await axios.post('http://localhost:8000/api/v1/rest-auth/registration/',signup, {
+          "Access-Control-Allow-Origin" : "*",
+      })
+      .then((resp)=>{
+           console.log(resp.data)
+          if(resp.data.key !== null && resp.data.user !== null){
+              localStorage.setItem('token', resp.data);
+              history.push('create_project');
+          }else{
+              alert('Invalid Email Or Password');
+          }
+      })
+      .catch((error)=>console.log(error))
+      .then(setSignup({email:'',password:'',passwordCnf:''}))
+      }else{
+        alert('Password and Confirm Password does not match'); 
+    }  
+  }
+
   return (
     <>
       <div className="content">
@@ -32,13 +68,18 @@ function Signup() {
                       <FormGroup>
                         <label>Email</label>
                         <Input
-                          placeholder="Email"
+                          type='email'
+                          id='emailSignupInput'
+                          name='email'
+                          onChange={onChangeHandler} 
+                          value={signup.email}
+                          placeholder="User Name"
                           type="text"
                         />
                       </FormGroup>
                     </Col>
                     </Row>
-                    <Row>
+                    {/*<Row>
                     <Col className="pr-1" md="12">
                       <FormGroup>
                         <label>User Name</label>
@@ -70,12 +111,15 @@ function Signup() {
                         />
                       </FormGroup>
                     </Col>
-                  </Row>
+                    </Row>*/}
                   <Row>
                     <Col md="12">
                       <FormGroup>
                         <label>Password</label>
                         <Input
+                          name='password'
+                          onChange={onChangeHandler} 
+                          value={signup.password}
                           placeholder="Password"
                           type="password"
                         />
@@ -87,6 +131,9 @@ function Signup() {
                       <FormGroup>
                         <label>Confirm Password</label>
                         <Input
+                          name='passwordcnf'
+                          onChange={onChangeHandler} 
+                          value={signup.passwordCnf}
                           placeholder="Confirm Password"
                           type="password"
                         />
@@ -100,6 +147,7 @@ function Signup() {
                         className="btn-round"
                         color="primary"
                         type="submit"
+                        onClick={onSubmitHandler}
                       >
                         Sign Up
                       </Button>
