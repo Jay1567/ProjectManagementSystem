@@ -10,6 +10,9 @@ import UpgradeToPro from "views/Upgrade.js";
 // My Pages
 import Login from "Login/Login.js";
 import Signup from "Signup/Signup.js";
+import Project from "Project/Project.js";
+import Calendar from "Calendar/Calendar.js";
+
 
 var routes = [
   //My Pages
@@ -25,6 +28,20 @@ var routes = [
     name: "Signup",
     icon: "nc-icon nc-caps-small",
     component: Signup,
+    layout: "/user",
+  },
+  {
+    path: "/create_project",
+    name: "Create Project",
+    icon: "nc-icon nc-caps-small",
+    component: Project,
+    layout: "/user",
+  },
+  {
+    path: "/Calendar",
+    name: "Calendar",
+    icon: "nc-icon nc-caps-small",
+    component: Calendar,
     layout: "/user",
   },
   //Default
