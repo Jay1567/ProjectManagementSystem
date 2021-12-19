@@ -16,24 +16,20 @@ import {
   Col,
 } from "reactstrap";
 
-function Signup() {
+function Project() {
 
   const history = useHistory();
-  const [signup,setSignup] =useState({
-      email:'',password:'',passwordCnf:''
-  });
+  const [c_project,setC_project] =useState({name:'',description:'',members:'',startDate:'',endDate:'',tags:''});
 
   const onChangeHandler = (e) =>{
       const itemName = e.target.name;
       const itemValue = e.target.value;
-      setSignup({...signup,[itemName]:itemValue});
+      setC_project({...c_project,[itemName]:itemValue});
   }
 
   const onSubmitHandler = async (e)=>{
       e.preventDefault();
-      if(signup.password===signup.passwordCnf && signup.password !== '' && signup.passwordCnf !== ''){
-        console.log(signup);
-        await axios.post('http://localhost:8000/api/v1/rest-auth/registration/',signup, {
+      await axios.post('http://localhost:8000/api/v1/rest-auth/create_project/',c_project, {
           "Access-Control-Allow-Origin" : "*",
       })
       .then((resp)=>{
@@ -46,46 +42,48 @@ function Signup() {
           }
       })
       .catch((error)=>console.log(error))
-      .then(setSignup({email:'',password:'',passwordCnf:''}))
-      }else{
-        alert('Password and Confirm Password does not match'); 
-    }  
+      .then(setC_project({name:'',description:'',members:'',startDate:'',endDate:'',tags:''}))   
   }
 
   return (
     <>
       <div className="content">
         <Row>
-        <Col className="ml-auto mr-auto" md="5">
+          <Col className="ml-auto mr-auto" md="8">
             <Card className="card-user">
-              <CardHeader className="text-center">
-                <CardTitle tag="h5">Sign Up</CardTitle>
+              <CardHeader>
+                <CardTitle tag="h5">Create Project</CardTitle>
               </CardHeader>
               <CardBody>
                 <Form>
                   <Row>
+                    <Col className="px-1" md="12">
+                      <FormGroup>
+                        <label>Project Name</label>
+                        <Input
+                          placeholder="Project Name"
+                          type="text"
+                          id='projectName'
+                          name='name'
+                          onChange={onChangeHandler} 
+                          value={c_project.name}
+                          placeholder="Project Name"
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
                     <Col className="pr-1" md="12">
                       <FormGroup>
-                        <label>Email</label>
+                        <label>Project Description</label>
                         <Input
-                          type='email'
-                          id='emailSignupInput'
-                          name='email'
+                          placeholder="Project Description"
+                          type="textarea"
+                          id='projectDes'
+                          name='description'
                           onChange={onChangeHandler} 
-                          value={signup.email}
-                          placeholder="User Name"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    </Row>
-                    {/*<Row>
-                    <Col className="pr-1" md="12">
-                      <FormGroup>
-                        <label>User Name</label>
-                        <Input
-                          placeholder="User Name"
-                          type="text"
+                          value={c_project.description}
+                          placeholder="Project Description"
                         />
                       </FormGroup>
                     </Col>
@@ -93,35 +91,45 @@ function Signup() {
                   <Row>
                     <Col md="12">
                       <FormGroup>
-                        <label>Company Name</label>
+                        <label>Members</label>
                         <Input
-                          placeholder="Company Name"
+                          placeholder="Members"
                           type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <FormGroup>
-                        <label>Mobile</label>
-                        <Input
-                          placeholder="Mobile"
-                          type="number"
-                        />
-                      </FormGroup>
-                    </Col>
-                    </Row>*/}
-                  <Row>
-                    <Col md="12">
-                      <FormGroup>
-                        <label>Password</label>
-                        <Input
-                          name='password'
+                          id='projectMem'
+                          name='members'
                           onChange={onChangeHandler} 
-                          value={signup.password}
-                          placeholder="Password"
-                          type="password"
+                          value={c_project.members}
+                          placeholder="Members"
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="pr-1" md="6">
+                      <FormGroup>
+                        <label>Start Date</label>
+                        <Input
+                          placeholder="Start Date"
+                          type="date"
+                          id='starDate'
+                          name='startDate'
+                          onChange={onChangeHandler} 
+                          value={c_project.startDate}
+                          placeholder="Start Date"
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col className="px-1" md="6">
+                      <FormGroup>
+                        <label>End Date</label>
+                        <Input
+                          placeholder="End Date"
+                          type="date"
+                          id='endDate'
+                          name='endDate'
+                          onChange={onChangeHandler} 
+                          value={c_project.endDate}
+                          placeholder="End Date"
                         />
                       </FormGroup>
                     </Col>
@@ -129,18 +137,19 @@ function Signup() {
                   <Row>
                     <Col md="12">
                       <FormGroup>
-                        <label>Confirm Password</label>
+                        <label>Tags</label>
                         <Input
-                          name='passwordcnf'
+                          placeholder="Tags"
+                          type="textarea"
+                          id='tags'
+                          name='tags'
                           onChange={onChangeHandler} 
-                          value={signup.passwordCnf}
-                          placeholder="Confirm Password"
-                          type="password"
+                          value={c_project.tags}
+                          placeholder="Tags"
                         />
                       </FormGroup>
                     </Col>
                   </Row>
-
                   <Row>
                     <div className="update ml-auto mr-auto">
                       <Button
@@ -149,16 +158,7 @@ function Signup() {
                         type="submit"
                         onClick={onSubmitHandler}
                       >
-                        Sign Up
-                      </Button>
-                    </div>
-                    <div className="update ml-auto mr-auto">
-                      <Button
-                        className="btn-round"
-                        color="primary"
-                        type="submit"
-                      >
-                        Login
+                        Create Project
                       </Button>
                     </div>
                   </Row>
@@ -172,4 +172,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Project;

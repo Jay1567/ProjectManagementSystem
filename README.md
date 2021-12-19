@@ -37,7 +37,7 @@ cd ProjectManagementSystem-Project/frontend && npm install
 #Make Database Tables:
 cd ..
 python manage.py makemigrations
-python manage.py migrate
+
 ```
 
 ---

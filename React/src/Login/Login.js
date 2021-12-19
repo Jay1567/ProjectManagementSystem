@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from 'react';
+import {useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import {
   Button,
@@ -15,6 +17,37 @@ import {
 } from "reactstrap";
 
 function Login() {
+
+  const history = useHistory();
+  const [signin,setSignin] =useState({
+      email:'',
+      password:'',
+  });
+
+  const onChangeHandler = (e) =>{
+      const itemName = e.target.name;
+      const itemValue = e.target.value;
+      setSignin({...signin,[itemName]:itemValue});
+  }
+
+  const onSubmitHandler = async (e)=>{
+      e.preventDefault();
+      await axios.post('http://localhost:8000/api/v1/rest-auth/login/',signin, {
+          "Access-Control-Allow-Origin" : "*",
+      })
+      .then((resp)=>{
+           console.log(resp.data)
+          if(resp.data.key !== null && resp.data.user !== null){
+              localStorage.setItem('token', resp.data);
+              history.push('create_project');
+          }else{
+              alert('Invalid Email Or Password');
+          }
+      })
+      .catch((error)=>console.log(error))
+      .then(setSignin({email:'',password:''}))   
+  }
+
   return (
     <>
       <div className="content">
@@ -31,7 +64,11 @@ function Login() {
                       <FormGroup>
                         <label>User Name</label>
                         <Input
-                          defaultValue="abc@abc.com"
+                          type='email'
+                          id='emailSigninInput'
+                          name='email'
+                          onChange={onChangeHandler} 
+                          value={signin.email}
                           placeholder="User Name"
                           type="text"
                         />
@@ -43,6 +80,10 @@ function Login() {
                       <FormGroup>
                         <label>Password</label>
                         <Input
+                          name='password'
+                          id='passwdSigninInput'
+                          value={signin.password}
+                          onChange={onChangeHandler} 
                           placeholder="Password"
                           type="password"
                         />
@@ -55,6 +96,7 @@ function Login() {
                         className="btn-round"
                         color="primary"
                         type="submit"
+                        onClick={onSubmitHandler}
                       >
                         Login
                       </Button>
