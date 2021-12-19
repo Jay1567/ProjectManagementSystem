@@ -46,4 +46,9 @@ class AddMemberSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class TaskSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Task
+        fields = ['project_id', 'deadline', 'subject', 'details',
+            'status', 'priority', 'assignees', 'assign_date']
