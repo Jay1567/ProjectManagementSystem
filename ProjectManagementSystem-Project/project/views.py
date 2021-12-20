@@ -10,12 +10,13 @@ class CreateProject(generics.ListCreateAPIView):
         return Project.objects.filter(Q(project_manager=user) | Q(team_members=user))
     
     
-class AddMember(generics.CreateAPIView):
+class AddMember(generics.ListCreateAPIView):
     serializer_class = AddMemberSerializer
     
     def get_queryset(self):
         user = self.request.user
-        return user.Project_Assignees.all()
+        project_id = self.kwargs.get('project_id')
+        return Project_Assignees.objects.filter(project_id=project_id)
 
 
 class ListTask(generics.ListCreateAPIView):

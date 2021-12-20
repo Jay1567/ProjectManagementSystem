@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('create_project/', CreateProject.as_view()),
-    path('add_member/', AddMember.as_view()),
+    path('add_member/<int:project_id>/', AddMember.as_view()),
     path('add_task/<int:project_id>/', ListTask.as_view()),
     path('edit_task/<int:project_id>/<int:task_id>/', EditTask.as_view()),
     path('list_discussion_thread/<int:project_id>/', ListDiscussionThread.as_view()),
