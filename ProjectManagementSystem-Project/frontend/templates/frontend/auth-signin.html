@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     {% load static %}
-    <title>:: My-Task:: Signin</title>
+    <title>:: PMS:: Signin</title>
     <link rel="icon" href="{% static 'frontend/assets/favicon.ico' %}" type="image/x-icon">
     <!-- project css file  -->
 
@@ -37,7 +37,7 @@
                                 </svg>
                             </div>
                             <div class="mb-5">
-                                <h2 class="color-900 text-center">My-Task Let's Management Better</h2>
+                                <h2 class="color-900 text-center">Project Managment System</h2>
                             </div>
                             <!-- Image block -->
                             <div class="">
@@ -51,16 +51,6 @@
                             <form class="row g-1 p-3 p-md-4">
                                 <div class="col-12 text-center mb-1 mb-lg-5">
                                     <h1>Sign in</h1>
-                                    <span>Free access to our dashboard.</span>
-                                </div>
-                                <div class="col-12 text-center mb-4">
-                                    <a class="btn btn-lg btn-outline-secondary btn-block" href="#">
-                                        <span class="d-flex justify-content-center align-items-center">
-                                            <img class="avatar xs me-2" src="{% static 'frontend/assets/images/google.svg' %}" alt="Image Description">
-                                            Sign in with Google
-                                        </span>
-                                    </a>
-                                    <span class="dividers text-muted mt-4">OR</span>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
@@ -80,11 +70,8 @@
                                     </div>
                                 </div>
                                 <button type="submit" id="signin" class="btn btn-primary mt-4">Signin</button>
-                                <div class="col-12 text-center mt-4" id="signInBtn">
-                                    <a href="index.html" class="btn btn-lg btn-block btn-light lift text-uppercase" atl="signin">SIGN IN</a>
-                                </div>
                                 <div class="col-12 text-center mt-4">
-                                    <span class="text-muted">Don't have an account yet? <a href="auth-signup.html" class="text-secondary">Sign up here</a></span>
+                                    <span class="text-muted">Don't have an account yet? <a href="auth-signup" class="text-secondary">Sign up here</a></span>
                                 </div>
                             </form>
                             <!-- End Form -->
@@ -100,11 +87,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
   var b = 0;
-    $(document).ready(function(){
-                 $('#signin').click(function () {
-                    // this.preventDefault();
-                    // alert($('#password').val());
-                    // e.preventDefault();
+    $(document).ready(function(e){
+                 $('#signin').click(function (e) {
+                    e.preventDefault();
                     $.ajax({
                         url:"/api/v1/rest-auth/login/",
                         method: "POST",
@@ -114,15 +99,24 @@
                         },
                         dataType:'json',
                         success :function(result){
+                            // alert(result)
+                            window.location.replace(`/dashboard`);
                             $.ajax({
                               url:"/api/v1/rest-auth/user/",
                               method: "GET",
                               dataType:'json',
                               success :function(result){
-                                  console.log(result);
+                                // alert(result)  
+                                console.log(result);
                                   b= result;
-                              }
+                                  window.location.replace(`/dashboard`);
+                              },
+                              error:function(err){
+                             alert(err);
+                         }
                             });
+                         },error:function(err){
+                             alert(err);
                          }
                       });
                  }); }); 

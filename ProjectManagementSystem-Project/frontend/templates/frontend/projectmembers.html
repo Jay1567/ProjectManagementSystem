@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% load static %}
-    <title>::PMS::My Projects </title>
+    <title>::PMS::Team Meambers </title>
     <link rel="icon" href="{% static 'frontend/assets/favicon.ico' %}" type="image/x-icon">
 
     <!-- plugin css file  -->
@@ -94,7 +94,7 @@
                 <div class="row align-items-center">
                     <div class="border-0 mb-4">
                         <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
-                            <h3 class="fw-bold mb-0">My Projects</h3>
+                            <h3 class="fw-bold mb-0">Project Members</h3>
                         </div>
                     </div>
                 </div> <!-- Row end  -->
@@ -114,6 +114,21 @@
                                         <tbody id="user_tdata">
                     
                                         </tbody>
+                                        <!--<thead>
+                                          <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                          </tr>-->
                                       </table>
                                 </div>
                             </div>
@@ -270,34 +285,26 @@ function appendData(data) {
         // document.getElementById("myData").innerHTML = "";
         document.getElementById("user_tdata").innerHTML = "";
         document.getElementById("user_tab_thead").innerHTML = "";
-        // document.getElementById("user_tab_thead").innerHTML = "<tr><th>Id</th><th>Project Name</th><th>Project Manager</th><th>Start Date</th><th>Team Members</th><th>Tags</th><th>Action</th></tr>";
-        document.getElementById("user_tab_thead").innerHTML = "<tr><th>#</th><th>Project Name</th><th>Start Date</th><th>Team Members</th><th>Action</th><th>Tags</th><th>Action</th></tr>";
+        document.getElementById("user_tab_thead").innerHTML = "<tr><th>Id</th><th>Email</th><th>Role</th></tr>";
         var userlistdata = data.results;
         console.log(data);
         userlistdata.forEach(function(dt){
             $("#user_tdata").append(
                 "<tr>"+
                 "<td>"+dt.id+"</td>"+
-                "<td>"+dt.name+"</td>"+
-                // "<td>"+dt.project_manager+"</td>"+
-                "<td>"+dt.started_at+"</td>"+
-                "<td>"+dt.team_members+"</td>"+
-                "<td><a href='addmember?id="+dt.id+"'>Add Member<a/><br/>"+"<a href='members?id="+dt.id+"'>View Members<a/></td>"+
-                "<td>"+dt.tags+"</td>"+
-                "<td><a href='addtask?id="+dt.id+"'>Add Task<a/><br/>"+"<a href='tasks?id="+dt.id+"'>View Tasks<a/></td>"+
+                "<td>"+dt.email+"</td>"+
+                "<td>"+dt.role+"</td>"+
                 +"</tr>"
             );
         });
         // tableDataAlign();
     };
-
+    const params = new URLSearchParams(window.location.search)
     var b = 0;
     function getData(){
-        const uri = new Request ("/api/v1/project/create_project/",
+        const uri = new Request (`/api/v1/project/get_project_members/${params.get('id')}`,
         {
             method: 'GET',
-            // headers: h,
-            // mode: 'cors'
         });
 
         fetch(uri)
