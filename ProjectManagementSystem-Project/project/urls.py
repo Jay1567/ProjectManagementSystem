@@ -14,6 +14,7 @@ urlpatterns = [
     path('get_project_members/<int:pk>', GetMembers.as_view()),
     path('edit_project_member/<int:project_id>/<int:member_id>', EditMember.as_view()),
     path('create_bugreport/<int:project_id>/',CreateReport.as_view()),
-    path('edit_bugreport/<int:project_id>/<int:report_id>/',EditReport.as_view())
-
+    path('edit_bugreport/<int:project_id>/<int:report_id>/',EditReport.as_view()),
+    path('list_calender/', ListCalender.as_view()),
+    path('edit_calender/<int:calender_id>/', EditCalender.as_view()),
 ]

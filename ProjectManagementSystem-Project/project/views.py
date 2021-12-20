@@ -147,3 +147,22 @@ class EditReport(generics.RetrieveUpdateDestroyAPIView):
                 return Bug_Report.objects.get(project_id = project_id, id = report_id)
         except:
             raise generics.Http404
+
+
+class ListCalender(generics.ListCreateAPIView):
+    serializer_class = CalenderSerializer
+
+    def get_queryset(self):
+        return Calender.objects.filter(user=self.request.user)
+
+
+class EditCalender(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CalenderSerializer
+    lookup_url_kwarg = ['calender_id']
+
+    def get_object(self):
+        calender_id = self.kwargs.get('calender_id')
+        try:
+            return Calender.objects.filter(user=self.request.user, id=calender_id)
+        except Calender.DoesNotExist:
+            raise generics.Http404

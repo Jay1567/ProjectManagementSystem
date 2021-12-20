@@ -99,7 +99,17 @@ class CreateReportSerializer(serializers.ModelSerializer):
         model = Bug_Report
         fields = ['project_id', 'reporter', 'subject', 'body', 'created', 'updated', 'priority', 'status', 'file']
 
+
 class EditReportSerializer(serializers.ModelSerializer):
     class Meta:
         model=Bug_Report
         fields = ['subject', 'body','priority', 'status']
+
+
+class CalenderSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+    email = serializers.ReadOnlyField(source='user.email')
+
+    class Meta:
+        model = Calender
+        fields = ['id', 'user', 'event_name', 'tags', 'description', 'start_time', 'end_time', 'email']

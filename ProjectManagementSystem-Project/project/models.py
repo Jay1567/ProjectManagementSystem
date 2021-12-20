@@ -106,3 +106,12 @@ class Bug_Report(models.Model):
 
     def __str__(self):
         return self.subject
+
+
+class Calender(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    event_name = models.CharField(max_length=512)
+    tags = TaggableManager(blank=True)
+    description = models.CharField(max_length=4096, null=True, blank=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
