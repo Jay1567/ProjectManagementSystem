@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 from dj_rest_auth.registration.views import ConfirmEmailView
+from django.views.generic import TemplateView
 
 api_version = 'api/v1/'
 
