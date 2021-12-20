@@ -7,7 +7,50 @@
 </head>
 <body>
 <div id="app"> </div>
+
+<form>
+  <input type="email" name="email" id="email">
+  <input type="password" name="password" id="password">
+
+  <input type="button" id="button" value="login">
+</form>
+
+
 </body>
 {% load static %}
 <script src="{% static "frontend/main.js" %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  var b = 0;
+    $(document).ready(function(){
+                 $('#button').click(function () {
+                    // this.preventDefault();
+                    // alert($('#password').val());
+                    // e.preventDefault();
+                    $.ajax({
+                        url:"/api/v1/rest-auth/login/",
+                        method: "POST",
+                        data: {
+                          "email": $('#email').val(),
+                          "password": $('#password').val()
+                        },
+                        dataType:'json',
+                        success :function(result){
+                            $.ajax({
+                              url:"/api/v1/rest-auth/user/",
+                              method: "GET",
+                              dataType:'json',
+                              success :function(result){
+                                  console.log(result);
+                                  b= result;
+                              }
+                            });
+                         }
+                      });
+
+
+                    
+                 }); }); 
+               
+          </script>
 </html>
