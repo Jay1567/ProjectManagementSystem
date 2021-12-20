@@ -374,7 +374,7 @@ const params = new URLSearchParams(window.location.search)
                                 console.log(result);
                                 b= result;
                                 alert("Task Created");
-                                window.location.replace(`/tasks?id=${params.get('id')}/`);   
+                                // window.location.replace(`/tasks?id=${params.get('id')}/`);   
                          },
                          error: function (error) {
                             console.log(`Error ${error}`);
