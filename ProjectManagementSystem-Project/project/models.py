@@ -51,7 +51,7 @@ class Task(models.Model):
     details = models.TextField(null=True, blank=True)
     status = models.CharField(choices=task_status, max_length=15, default="PENDING")
     priority = models.CharField(choices=priority_type, max_length=15, default="NORMAL")
-    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="task_assignee")
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="task_assignee",blank=True)
     assign_date = models.DateTimeField(default=now)
     
     # TODO: Add Multi file upload

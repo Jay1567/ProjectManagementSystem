@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="{% static 'frontend/assets/css/my-task.style.min.css' %}">
 </head>
 <body>
-
 <div id="mytask-layout" class="theme-indigo">
     
     <!-- sidebar -->
@@ -529,17 +528,7 @@ const getCookie = (name) => {
                         },
                         dataType:'json',
                         success :function(result){
-                            $.ajax({
-                              url:"/api/v1/rest-auth/user/",
-                              method: "GET",
-                              dataType:'json',
-                              success :function(result){
-                                  console.log(result);
-                                  b= result;
-                                  alert("Project Created");
-                                  window.location.replace("/myprojects");   
-                              }
-                            });
+                            window.location.replace("/projects");
                          },
                          error: function (error) {
                             console.log(`Error ${error}`);
