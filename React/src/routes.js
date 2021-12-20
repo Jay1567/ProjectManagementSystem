@@ -14,6 +14,7 @@ import Project from "Project/Project.js";
 import Calendar from "Calendar/Calendar.js";
 import ViewProjects from "ViewProjects/ViewProjects.js";
 import Dashboard from "components/Dashboard/Dashboard.js";
+import AddMember from "components/AddMember/AddMember.js";
 var routes = [
   //My Pages
   {
@@ -57,6 +58,14 @@ var routes = [
     name: "Dashboard",
     icon: "nc-icon nc-caps-small",
     component: Dashboard,
+    layout: "/user",
+  },
+
+  {
+    path: "/AddMember",
+    name: "AddMember",
+    icon: "nc-icon nc-caps-small",
+    component: AddMember,
     layout: "/user",
   },
   //Default
