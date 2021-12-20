@@ -80,6 +80,7 @@ class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField(max_length=10000)
     created_at = models.DateTimeField(default=now)
+ 
     
 class Bug_Report(models.Model):
     bug_status = (
