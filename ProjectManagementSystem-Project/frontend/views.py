@@ -9,3 +9,10 @@ def newProject(request):
 
 def myProjects(request):
     return render(request, 'frontend/myprojects.html')
+
+def signup(request):
+    return render(request, 'frontend/auth-signup.html')
+    
+def dashboard(request):
+    return render(request, 'frontend/dashboard.html')
+

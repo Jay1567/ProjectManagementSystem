@@ -1,4 +1,4 @@
-import Dashboard from "views/Dashboard.js";
+
 import Notifications from "views/Notifications.js";
 import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
@@ -13,7 +13,8 @@ import Signup from "Signup/Signup.js";
 import Project from "Project/Project.js";
 import Calendar from "Calendar/Calendar.js";
 import ViewProjects from "ViewProjects/ViewProjects.js";
-
+import Dashboard from "components/Dashboard/Dashboard.js";
+import AddMember from "components/AddMember/AddMember.js";
 var routes = [
   //My Pages
   {
@@ -49,6 +50,22 @@ var routes = [
     name: "ViewProjects",
     icon: "nc-icon nc-caps-small",
     component: ViewProjects,
+    layout: "/user",
+  },
+
+  {
+    path: "/Dashboard",
+    name: "Dashboard",
+    icon: "nc-icon nc-caps-small",
+    component: Dashboard,
+    layout: "/user",
+  },
+
+  {
+    path: "/AddMember",
+    name: "AddMember",
+    icon: "nc-icon nc-caps-small",
+    component: AddMember,
     layout: "/user",
   },
   //Default

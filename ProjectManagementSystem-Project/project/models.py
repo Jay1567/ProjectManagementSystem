@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields.related_descriptors import create_forward_many_to_many_manager
 from taggit.managers import TaggableManager
 from django.conf import settings
 
@@ -54,3 +55,54 @@ class Task(models.Model):
     assign_date = models.DateTimeField(default=now)
     
     # TODO: Add Multi file upload
+
+
+class DiscussionThread(models.Model):
+    thread_status = (
+        ('ACTIVE', 'ACTIVE'),
+        ('CLOSE', 'CLOSE')
+    )
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=512)
+    body = models.TextField(max_length=10000)
+    tags = TaggableManager(blank=True)
+    created_at = models.DateTimeField(default=now)
+    status = models.CharField(choices=thread_status, max_length=10, default='ACTIVE')
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    thread = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField(max_length=10000)
+    created_at = models.DateTimeField(default=now)
+ 
+    
+class Bug_Report(models.Model):
+    bug_status = (
+        ("OPEN", "open"),
+        ("RESOLVED", "resolved")
+    )
+    priority =(
+        ("NORMAL", "normal"),
+        ("LOW", "low"),
+        ("HIGH", "high")
+    )
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    reporter =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports")
+    subject = models.CharField(max_length=256)
+    body = models.CharField(max_length=2048)
+    created = models.DateTimeField(auto_now_add=True, blank=True)
+    updated = models.DateTimeField(auto_now_add=True, blank=True)
+    priority = models.CharField(max_length=256, choices=priority, default="NORMAL")
+    status = models.CharField(max_length=256, choices=bug_status, default="OPEN")
+    file = models.FileField(upload_to='documents/%Y/%m/%d', default=None)
+
+
+    def __str__(self):
+        return self.subject

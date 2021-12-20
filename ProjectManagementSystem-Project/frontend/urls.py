@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index),
     path('newproject', views.newProject),
     path('myprojects', views.myProjects),
-
+    path('auth-signup', views.signup),
+    path('dashboard', views.dashboard),
 ]

@@ -2,7 +2,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 from dj_rest_auth.registration.views import ConfirmEmailView
+<<<<<<< HEAD
 from django.views.generic import TemplateView
+=======
+from django.conf.urls.static import static
+from django.conf import settings
+>>>>>>> b7a39f1cb51f63fb2b155284d79218e3f871668a
 
 api_version = 'api/v1/'
 
@@ -24,4 +29,4 @@ urlpatterns = [
         path('api/v1/rest-auth/password-reset-complete/',
                 auth_views.PasswordResetCompleteView.as_view(),
                 name='password_reset_complete'),
-]
+]+ static( settings.MEDIA_URL, document_root = settings.MEDIA_ROOT )
