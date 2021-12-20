@@ -24,7 +24,7 @@ class ListTask(generics.ListCreateAPIView):
     def get_queryset(self):
         project_id = self.kwargs.get('project_id')
         try:
-            obj = Task.objects.get(id=project_id)
+            obj = Project.objects.get(id=project_id)
             if obj.project_manager == self.request.user.id:
                 return Task.objects.filter(project_id=project_id)
             return Task.objects.filter(project_id=project_id, assignees=self.request.user.id)
