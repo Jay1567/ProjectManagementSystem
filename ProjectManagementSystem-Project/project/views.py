@@ -99,3 +99,50 @@ class EditComment(generics.RetrieveUpdateDestroyAPIView):
             return Comment.objects.filter(id=comment_id, thread=thread, thread__project_id=project_id)
         except Comment.DoesNotExist:
             raise generics.Http404
+
+class GetMembers(generics.ListAPIView):
+    serializer_class = GetMembersSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Project_Assignees.objects.filter(project_id=self.kwargs.get('pk')) 
+       
+
+class EditMember(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = EditMemberSerializer
+    
+    def get_object(self):
+        project_id = self.kwargs.get('project_id')
+        member_id=self.kwargs.get('member_id')
+        try:
+            obj = Project.objects.get(id = project_id)
+            if obj.project_manager.id == self.request.user.id:
+                return Project_Assignees.objects.get(project_id = project_id, member_id= member_id)
+        except:
+            raise generics.Http404
+
+
+class CreateReport(generics.ListCreateAPIView):
+
+    serializer_class = CreateReportSerializer
+    
+    def get_queryset(self):
+        project_id = self.kwargs.get('project_id')
+        return Bug_Report.objects.filter(project_id=project_id) 
+       
+
+class EditReport(generics.RetrieveUpdateDestroyAPIView):
+    
+    serializer_class = EditReportSerializer
+    def get_object(self):
+        project_id = self.kwargs.get('project_id')
+        report_id = self.kwargs.get('report_id')
+        user = self.request.user.id
+        try:
+            obj = Project.objects.get(id = project_id)
+            
+            if obj.project_manager.id == user:
+                return Bug_Report.objects.get(project_id = project_id, id = report_id)
+            elif Project_Assignees.objects.filter(project_id = project_id, member_id =user):
+                return Bug_Report.objects.get(project_id = project_id, id = report_id)
+        except:
+            raise generics.Http404

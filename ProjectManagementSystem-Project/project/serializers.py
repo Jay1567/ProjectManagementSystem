@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from .models import *
 from rest_framework import serializers
 from taggit_serializer.serializers import TagListSerializerField, TaggitSerializer
@@ -8,7 +9,11 @@ from django.utils import timezone
 
 class CreateProjectSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
-
+    team_members = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='email'
+    )
     class Meta:
         model = Project
         fields = ['id', 'project_manager', 'name', 'description', 'tags', 'started_at', 'team_members']
@@ -76,3 +81,25 @@ class DiscussionThreadNestedSerializer(TaggitSerializer, serializers.ModelSerial
         model = DiscussionThread
         fields = ['id', 'project_id', 'user', 'title', 'body', 'created_at', 'status', 'tags', 'comments']
         
+class GetMembersSerializer(serializers.ModelSerializer):
+    email = serializers.ReadOnlyField(source='member_id.email')
+
+    class Meta:
+        model = Project_Assignees
+        fields =['id', 'role', 'email']
+
+class EditMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project_Assignees
+        fields = ['role',]
+
+
+class CreateReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bug_Report
+        fields = ['project_id', 'reporter', 'subject', 'body', 'created', 'updated', 'priority', 'status', 'file']
+
+class EditReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Bug_Report
+        fields = ['subject', 'body','priority', 'status']
