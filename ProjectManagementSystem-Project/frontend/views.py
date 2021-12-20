@@ -16,3 +16,6 @@ def signup(request):
 def dashboard(request):
     return render(request, 'frontend/dashboard.html')
 
+def member(request):
+    return render(request, 'frontend/member.html')
+
