@@ -20,10 +20,10 @@ class Project(models.Model):
 
 class Project_Assignees(models.Model):
     role_type = (
-        ("DEVOPS", "devops"),
-        ("FRONTEND", "frontend"),
-        ("BACKEND", "backend"),
-        ("TESTER", "tester"),
+        ("DEVOPS", "DEVOPS"),
+        ("FRONTEND", "FRONTEND"),
+        ("BACKEND", "BACKEND"),
+        ("TESTER", "TESTER"),
     )
     member_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_members")
@@ -84,13 +84,13 @@ class Comment(models.Model):
     
 class Bug_Report(models.Model):
     bug_status = (
-        ("OPEN", "open"),
-        ("RESOLVED", "resolved")
+        ("OPEN", "OPEN"),
+        ("RESOLVED", "RESOLVED")
     )
-    priority =(
-        ("NORMAL", "normal"),
-        ("LOW", "low"),
-        ("HIGH", "high")
+    priority_type =(
+        ("NORMAL", "NORMAL"),
+        ("LOW", "LOW"),
+        ("HIGH", "HIGH")
     )
 
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -99,7 +99,7 @@ class Bug_Report(models.Model):
     body = models.CharField(max_length=2048)
     created = models.DateTimeField(auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now_add=True, blank=True)
-    priority = models.CharField(max_length=256, choices=priority, default="NORMAL")
+    priority = models.CharField(max_length=256, choices=priority_type, default="NORMAL")
     status = models.CharField(max_length=256, choices=bug_status, default="OPEN")
     file = models.FileField(upload_to='documents/%Y/%m/%d', default=None)
 

@@ -4,6 +4,9 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'frontend/auth-signin.html')
 
+def reset_password(request):
+    return render(request, 'frontend/forget_password.html')
+
 def newProject(request):
     return render(request, 'frontend/create-project.html')
 

@@ -4,7 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index),
-    
+    path('forget-password/', views.reset_password),
+
     path('projects', views.myProjects),
     path('addproject', views.newProject),
 
