@@ -18,7 +18,7 @@ class AddMember(generics.CreateAPIView):
         return user.Project_Assignees.all()
 
 
-class AddTask(generics.ListCreateAPIView):
+class ListTask(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
 
     def get_queryset(self):
@@ -42,4 +42,60 @@ class EditTask(generics.RetrieveUpdateDestroyAPIView):
         try:
             return Task.objects.get(project_id=project_id, id=task_id)
         except Task.DoesNotExist:
+            raise generics.Http404
+
+
+class ListDiscussionThread(generics.ListCreateAPIView):
+    serializer_class = DiscussionThreadSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs.get('project_id')
+        return DiscussionThread.objects.filter(project_id=project_id)
+
+
+class EditDiscussionThread(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = DiscussionThreadSerializer
+    lookup_url_kwarg = ['thread_id']
+
+    def get_object(self):
+        project_id = self.kwargs.get('project_id')
+        thread = self.kwargs.get('thread_id')
+
+        try:
+            return DiscussionThread.objects.filter(project_id=project_id, id=thread)
+        except DiscussionThread.DoesNotExist:
+            raise generics.Http404
+
+
+class GetCompleteDiscussionThread(generics.ListAPIView):
+    serializer_class = DiscussionThreadNestedSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs.get('project_id')
+        thread = self.kwargs.get('thread_id')
+        return DiscussionThread.objects.filter(project_id=project_id, id=thread)
+
+
+class ListComments(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        project_id = self.kwargs.get('project_id')
+        thread = self.kwargs.get('thread_id')
+
+        return Comment.objects.filter(thread=thread, thread__project_id=project_id)
+
+
+class EditComment(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentSerializer
+    lookup_url_kwarg = ['comment_id']
+
+    def get_object(self):
+        project_id = self.kwargs.get('project_id')
+        thread = self.kwargs.get('thread_id')
+        comment_id = self.kwargs.get('comment_id')
+
+        try:
+            return Comment.objects.filter(id=comment_id, thread=thread, thread__project_id=project_id)
+        except Comment.DoesNotExist:
             raise generics.Http404

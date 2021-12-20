@@ -54,3 +54,28 @@ class Task(models.Model):
     assign_date = models.DateTimeField(default=now)
     
     # TODO: Add Multi file upload
+
+
+class DiscussionThread(models.Model):
+    thread_status = (
+        ('ACTIVE', 'ACTIVE'),
+        ('CLOSE', 'CLOSE')
+    )
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=512)
+    body = models.TextField(max_length=10000)
+    tags = TaggableManager(blank=True)
+    created_at = models.DateTimeField(default=now)
+    status = models.CharField(choices=thread_status, max_length=10, default='ACTIVE')
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    thread = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField(max_length=10000)
+    created_at = models.DateTimeField(default=now)

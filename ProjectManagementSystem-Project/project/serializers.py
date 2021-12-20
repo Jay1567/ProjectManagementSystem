@@ -50,5 +50,29 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['project_id', 'deadline', 'subject', 'details',
+        fields = ['id', 'project_id', 'deadline', 'subject', 'details',
             'status', 'priority', 'assignees', 'assign_date']
+
+
+class DiscussionThreadSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = DiscussionThread
+        fields = ['id', 'project_id', 'user', 'title', 'body', 'created_at', 'status', 'tags']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id', 'thread', 'user', 'message', 'created_at']
+
+
+class DiscussionThreadNestedSerializer(TaggitSerializer, serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True, source='comment_set')
+    tags = TagListSerializerField()
+
+    class Meta:
+        model = DiscussionThread
+        fields = ['id', 'project_id', 'user', 'title', 'body', 'created_at', 'status', 'tags', 'comments']
+        
