@@ -100,7 +100,7 @@
                         dataType:'json',
                         success :function(result){
                             // alert(result)
-                            window.location.replace(`/dashboard`);
+                            // window.location.replace(`/dashboard`);
                             $.ajax({
                               url:"/api/v1/rest-auth/user/",
                               method: "GET",
@@ -108,8 +108,9 @@
                               success :function(result){
                                 // alert(result)  
                                 console.log(result);
+                                sessionStorage.setItem("id", result.id);
                                   b= result;
-                                  window.location.replace(`/dashboard`);
+                                //   window.location.replace(`/dashboard`);
                               },
                               error:function(err){
                              alert("Incorrect Password Or Username");

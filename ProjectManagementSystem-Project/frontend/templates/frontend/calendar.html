@@ -352,6 +352,7 @@ function renderCal() {
     </div>
 </div>
 <script>
+    console.log()
     function addevent(){
         const getCookie = (name) => {
         const cookies = document.cookie.split(';');
@@ -372,18 +373,19 @@ function renderCal() {
                 method: "POST",
                 headers:{"X-CSRFToken": getCookie('csrftoken')},
                 data: {
-                        "user":"202012118@daiict.ac.in"//params.get('id'),
+                        "user":sessionStorage.getItem('id'),
                         "event_name": $('#event_name').val(),
                         "start_time":$("#start_time").val(),
                         "end_time":$("#end_time").val(),
                         "description":$("#description").val(),
-                        "tags":arr;
+                        "tags":arr
                     },
                     dataType:'json',
                     success :function(result){
                         console.log(result);
                         b= result;
                         alert("Event Added");
+                        window.location.reload();
                     },
                     error: function (error) {
                         console.log(`Error ${error}`);
