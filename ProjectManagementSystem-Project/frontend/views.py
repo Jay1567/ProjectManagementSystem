@@ -25,6 +25,9 @@ def members(request):
 def addMember(request):
     return render(request, 'frontend/addMember.html')
 
+def calendar(request):
+    return render(request, 'frontend/calendar.html')
+
 def signup(request):
     return render(request, 'frontend/auth-signup.html')
     

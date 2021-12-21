@@ -16,5 +16,7 @@ urlpatterns = [
     path('addtask', views.newTask),
     
     path('auth-signup', views.signup),
-    path('dashboard', views.dashboard)
+    path('dashboard', views.dashboard),
+
+    path('calendar', views.calendar),
 ]
