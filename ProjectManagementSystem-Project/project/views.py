@@ -8,6 +8,7 @@ class CreateProject(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user.id
         return Project.objects.filter(Q(project_manager=user) | Q(team_members=user))
+        # return Project.objects.filter(Q(project_manager=user))
     
     
 class AddMember(generics.ListCreateAPIView):

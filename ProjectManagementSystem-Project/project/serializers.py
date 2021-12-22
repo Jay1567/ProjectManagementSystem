@@ -83,10 +83,10 @@ class DiscussionThreadNestedSerializer(TaggitSerializer, serializers.ModelSerial
         
 class GetMembersSerializer(serializers.ModelSerializer):
     email = serializers.ReadOnlyField(source='member_id.email')
-
+    member_id = serializers.ReadOnlyField(source='member_id.id')
     class Meta:
         model = Project_Assignees
-        fields =['id', 'role', 'email']
+        fields =['id', 'role', 'email', 'member_id']
 
 class EditMemberSerializer(serializers.ModelSerializer):
     class Meta:

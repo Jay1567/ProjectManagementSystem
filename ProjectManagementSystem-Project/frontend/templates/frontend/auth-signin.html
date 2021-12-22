@@ -48,7 +48,7 @@
                     <div class="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
                         <div class="w-100 p-3 p-md-5 card border-0 bg-dark text-light" style="max-width: 32rem;">
                             <!-- Form -->
-                            <form class="row g-1 p-3 p-md-4">
+                            <form class="row g-1 p-3 p-md-4"  id="loginform">
                                 <div class="col-12 text-center mb-1 mb-lg-5">
                                     <h1>Sign in</h1>
                                 </div>
@@ -69,7 +69,9 @@
                                         <input type="password" id="password" class="form-control form-control-lg" placeholder="***************">
                                     </div>
                                 </div>
-                                <button type="submit" id="signin" class="btn btn-primary mt-4">Signin</button>
+                                <div id ="notify"></div>
+
+                                <button type="submit" class="btn btn-primary mt-4">Signin</button>
                                 <div class="col-12 text-center mt-4">
                                     <span class="text-muted">Don't have an account yet? <a href="auth-signup" class="text-secondary">Sign up here</a></span>
                                 </div>
@@ -85,77 +87,71 @@
 
 <!--My Script-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-  var b = 0;
-    $(document).ready(function(e){
-                 $('#signin').click(function (e) {
-                    e.preventDefault();
-                    $.ajax({
-                        url:"/api/v1/rest-auth/login/",
-                        method: "POST",
-                        data: {
-                          "email": $('#email').val(),
-                          "password": $('#password').val()
-                        },
-                        dataType:'json',
-                        success :function(result){
-                            // alert(result)
-                            // window.location.replace(`/dashboard`);
-                            $.ajax({
-                              url:"/api/v1/rest-auth/user/",
-                              method: "GET",
-                              dataType:'json',
-                              success :function(result){
-                                // alert(result)  
-                                console.log(result);
-                                sessionStorage.setItem("id", result.id);
-                                  b= result;
-                                //   window.location.replace(`/dashboard`);
-                              },
-                              error:function(err){
-                             alert("Incorrect Password Or Username");
-                         }
-                            });
-                         },error:function(err){
-                            alert("Incorrect Password Or Username");
-                         }
-                      });
-                 }); }); 
-               
-          </script>
-
-
 <!-- Jquery Core Js -->
 <script src="{% static 'frontend/assets/bundles/libscripts.bundle.js' %}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-  var b = 0;
-    $(document).ready(function(){
-                 $('#signInBtn').click(function () {
-                    // this.preventDefault();
-                    // alert($('#password').val());
-                    // e.preventDefault();
-                    $.ajax({
-                        url:"/api/v1/rest-auth/login/",
-                        method: "POST",
-                        data: {
-                          "email": $('#email').val(),
-                          "password": $('#password').val()
-                        },
-                        dataType:'json',
-                        success :function(result){
-                            $.ajax({
-                              url:"/api/v1/rest-auth/user/",
-                              method: "GET",
-                              dataType:'json',
-                              success :function(result){
-                                  console.log(result);
-                                  b= result;
-                              }
-                            });
-                         }
-                      });                    
-                 }); }); 
-          </script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    const loginform = document.getElementById('loginform')
+    
+   
+
+    loginform.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    var myData = {
+        email: $('#email').val(),
+        password:$('#password').val(),
+    };
+
+    const url = "/api/v1/rest-auth/login/";
+    const data = {
+            method: "post",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+                },
+            body: JSON.stringify(myData)
+        }
+    fetch(url, data).then(function(response) {
+        if(response.status >=200 && response.status <=299)
+            window.location.href = '/projects'
+        else
+        {
+            {% comment %} regform.reset(); {% endcomment %}
+            throw response
+        }
+    }).catch(function(ex) {
+        
+        ex.json().then(data =>{
+            console.log(data)
+            data = Object.values(data)
+            document.querySelector("#notify").innerHTML = `<div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Alert!</strong> ${data[0]}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`
+        })
+        
+
+    });
+}) ;
+
+</script>
 </body>
 </html>
