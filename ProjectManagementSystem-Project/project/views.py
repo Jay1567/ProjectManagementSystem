@@ -9,7 +9,15 @@ class CreateProject(generics.ListCreateAPIView):
         user = self.request.user.id
         return Project.objects.filter(Q(project_manager=user) | Q(team_members=user))
     
-    
+
+class EditProject(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CreateProjectSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        return Project.objects.filter(Q(project_manager=user) | Q(team_members=user))
+
+
 class AddMember(generics.ListCreateAPIView):
     serializer_class = AddMemberSerializer
     
