@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% load static %}
-    <title>:: PMS:: Create Task</title>
+    <title>Create Task</title>
     <link rel="icon" href="{% static 'frontend/assets/favicon.ico' %}" type="image/x-icon">
     <!-- plugin css file  -->
     <link rel="stylesheet" href="{% static 'frontend/assets/plugin/parsleyjs/css/parsley.css' %}">
@@ -122,19 +122,19 @@
                                         <div class="col-md-12">
                                                 <label  class="form-label">Status</label>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios11" value="COMPLETED" checked>
-                                                            <label class="form-check-label" for="exampleRadios11">
-                                                             COMPLETED
+                                                            <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios22" value="PENDING" checked>
+                                                            <label class="form-check-label" for="exampleRadios22">
+                                                               PENDING
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios22" value="PENDING">
-                                                            <label class="form-check-label" for="exampleRadios22">
-                                                               PENDING
+                                                            <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios11" value="COMPLETED">
+                                                            <label class="form-check-label" for="exampleRadios11">
+                                                             COMPLETED
                                                             </label>
                                                         </div>
                                                     </div>
@@ -143,23 +143,23 @@
                                             <div class="col-md-12">
                                                 <label  class="form-label">Priority</label>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios33" value="LOW" checked>
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios33" value="LOW" >
                                                             <label class="form-check-label" for="exampleRadios33">
                                                              LOW
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios44" value="NORMAL">
+                                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios44" value="NORMAL" checked>
                                                             <label class="form-check-label" for="exampleRadios44">
                                                                NORMAL
                                                             </label>
                                                         </div>
                                                     </div> 
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios55" value="HIGH">
                                                             <label class="form-check-label" for="exampleRadios55">
@@ -169,18 +169,23 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="assign_date" class="form-label">Assign Date</label>
+                                                    <input type="datetime-local" class="form-control" id="assign_date" required>
+                                                </div>  
+                                                <div class="col-md-6">
+                                                    <label for="deadline" class="form-label">Deadline</label>
+                                                    <input type="datetime-local" class="form-control" id="deadline" required>
+                                                </div>  
+                                            </div>
+                                            <div class="col-md-2">
                                                 <label for="assignees" class="form-label">Assignees</label>
-                                                <input type="text" class="form-control" id="assignees" required>
                                             </div>  
-                                            <div class="col-md-6">
-                                                <label for="assign_date" class="form-label">Assign Date</label>
-                                                <input type="datetime-local" class="form-control" id="assign_date" required>
+                                            <div class="col-md-4">
+                                                <select class="select" id="assignees" multiple required></select>        
                                             </div>  
-                                            <div class="col-md-6">
-                                                <label for="deadline" class="form-label">Deadline</label>
-                                                <input type="datetime-local" class="form-control" id="deadline" required>
-                                            </div>  
+
                                     </div>
                                     </div>
                                     
@@ -335,7 +340,15 @@
 </div>
 
 <!--My Script-->
+<!-- Jquery Core Js -->
+<script src="{% static 'frontend/assets/bundles/libscripts.bundle.js' %}"></script>
+
+<!-- Plugin Js-->
+<script src="{% static 'frontend/assets/plugin/parsleyjs/js/parsley.js' %}"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'frontend/js/template.js' %}"></script>     
+
 <script>
 const getCookie = (name) => {
     const cookies = document.cookie.split(';');
@@ -348,28 +361,49 @@ const getCookie = (name) => {
     return "";
 }
 const params = new URLSearchParams(window.location.search)
-  var b = 0;
     $(document).ready(function(){
+        $.ajax({
+            url:`api/v1/project/get_project_members/${params.get('id')}`,
+            method: "GET",
+            headers:{"X-CSRFToken": getCookie('csrftoken')},
+            dataType:'json',
+            success :function(result){
+                for(var i=0; i<result['results'].length; i++){
+                    $('#assignees').append(`<option value=${result['results'][i]['member_id']}>${result['results'][i]['email']}</option>` )
+                }
+            },
+             error: function (error) {
+                console.log(`Error ${error}`);
+                alert(error);
+            }
+          });
+
+
+
                  $('#create').click(function (e) {
                     e.preventDefault();
-                    var arr = [1];
-                    var str = JSON.stringify(arr);
+                    data= {}
+
+                    data["project_id"] = params.get('id');
+                    data["deadline"] = $('#deadline').val(),
+                    data["subject"] = $('#subject').val(),
+                    data["details"] = $('#details').val(),
+                    data["status"] = $('#status').val(),
+                    data["assign_date"] = $('#assign_date').val()
+
+                    var arr = $('#assignees').val();
+                    var numArr = arr.map(Number);
+                    data['assignees'] = numArr
+                    
+                    
+
                     $.ajax({
                         url:`api/v1/project/add_task/${params.get('id')}/`,
                         method: "POST",
                         headers:{"X-CSRFToken": getCookie('csrftoken')},
-                        data: {
-                        "project_id":params.get('id'),
-                          "deadline": $('#deadline').val(),
-                          "subject": $('#subject').val(),
-                          "details": $('#details').val(),
-                          "status": $('#status').val(),
-                        //   "assignees": $('#assignees').val(),
-                          "assignees[]":str,
-                          "assign_date": $('#assign_date').val()
-
-                        },
+                        contentType: 'application/json',
                         dataType:'json',
+                        data: JSON.stringify(data),
                         success :function(result){
                                 console.log(result);
                                 b= result;
@@ -385,22 +419,7 @@ const params = new URLSearchParams(window.location.search)
              }); 
                
 </script>
-<!-- Jquery Core Js -->
-<script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script>
-
-<!-- Plugin Js-->
-<script src="{% static 'assets/plugin/parsleyjs/js/parsley.js' %}"></script>
     
-
-<!-- Jquery Page Js -->
-<script src="../js/template.js"></script>     
-<script>
-    $(function() {
-        // initialize after multiselect
-        $('#basic-form').parsley();
-    });
-</script>
- 
 </body>
 
 <!-- Mirrored from pixelwibes.com/template/my-task/html/dist/forms.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 12 Oct 2021 18:45:30 GMT -->

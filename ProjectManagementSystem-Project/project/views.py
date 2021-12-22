@@ -35,7 +35,7 @@ class ListTask(generics.ListCreateAPIView):
         project_id = self.kwargs.get('project_id')
         try:
             obj = Project.objects.get(id=project_id)
-            if obj.project_manager == self.request.user.id:
+            if obj.project_manager == self.request.user:
                 return Task.objects.filter(project_id=project_id)
             return Task.objects.filter(project_id=project_id, assignees=self.request.user.id)
         except Task.DoesNotExist: 
