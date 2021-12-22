@@ -21,9 +21,9 @@ urlpatterns = [
 
         ##Password-reset
         path('api/v1/rest-auth/password/reset/<uidb64>/<token>/', \
-                auth_views.PasswordResetConfirmView.as_view(),  \
+                auth_views.PasswordResetConfirmView.as_view(template_name="templates/registration/password_reset_confirm.html"),  \
                 name='password_reset_confirm'),
         path('api/v1/rest-auth/password-reset-complete/',
-                auth_views.PasswordResetCompleteView.as_view(),
+                auth_views.PasswordResetCompleteView.as_view(template_name="templates/registration/password_reset_complete.html"),
                 name='password_reset_complete'),
 ]+ static( settings.MEDIA_URL, document_root = settings.MEDIA_ROOT )

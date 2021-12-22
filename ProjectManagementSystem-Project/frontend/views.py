@@ -37,3 +37,5 @@ def dashboard(request):
 def member(request):
     return render(request, 'frontend/member.html')
 
+def updateProfile(request):
+    return render(request, 'frontend/userProfile.html')

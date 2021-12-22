@@ -19,4 +19,6 @@ urlpatterns = [
     path('dashboard', views.dashboard),
 
     path('calendar', views.calendar),
+    path('userprofile', views.updateProfile)
+
 ]
