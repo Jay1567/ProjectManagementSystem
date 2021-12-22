@@ -1,19 +1,17 @@
 <!doctype html>
+{% load static %}
+
 <html class="no-js" lang="en" dir="ltr">
 
-
-<!-- Mirrored from pixelwibes.com/template/my-task/html/dist/ui-elements/auth-signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 12 Oct 2021 18:45:58 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    {% load static %}
     <title>:: My-Task:: Signup</title>
-    <link rel="icon" href="{% static 'frontend/assets/favicon.ico' %} type="image/x-icon"> <!-- Favicon-->
+
+    <link rel="icon" href="{% static 'frontend/assets/favicon.ico' %}" type="image/x-icon">
     <!-- project css file  -->
-    <link rel="stylesheet" href="{% static 'frontend/assets/css/my-task.style.min.css' %}">
-   
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/my-task.style.min.css'%}">
 </head>
 
 <body>
@@ -42,7 +40,7 @@
                             </div>
                             <!-- Image block -->
                             <div class="">
-                                <img src="../assets/images/login-img.svg" alt="login-img">
+                                <img src="{%static 'frontend/assets/images/login-img.svg'%}" alt="login-img">
                             </div>
                         </div>
                     </div>
@@ -50,54 +48,56 @@
                     <div class="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
                         <div class="w-100 p-3 p-md-5 card border-0 bg-dark text-light" style="max-width: 32rem;">
                             <!-- Form -->
-                            <form class="row g-1 p-3 p-md-4">
+                            <form class="row g-1 p-3 p-md-4" id="regform">
                                 <div class="col-12 text-center mb-1 mb-lg-5">
                                     <h1>Create your account</h1>
                                     <span>Free access to our dashboard.</span>
                                 </div>
-                                <div class="col-6">
+                                {% comment %} <div class="col-6">
                                     <div class="mb-2">
                                         <label class="form-label">Full name</label>
-                                        <input type="email" class="form-control form-control-lg" placeholder="John">
+                                        <input type="email" class="form-control form-control-lg" placeholder="John" >
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-2">
                                         <label class="form-label">&nbsp;</label>
-                                        <input type="email" class="form-control form-control-lg" placeholder="Parker">
+                                        <input type="password" class="form-control form-control-lg" placeholder="Parker">
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Email address</label>
-                                        <input type="email" class="form-control form-control-lg" placeholder="name@example.com">
+                                        <input type="email" class="form-control form-control-lg" placeholder="name@example.com" id="email">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Password</label>
-                                        <input type="email" class="form-control form-control-lg" placeholder="8+ characters required">
+                                        <input type="password" class="form-control form-control-lg" placeholder="8+ characters required" id="password">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="mb-2">
                                         <label class="form-label">Confirm password</label>
-                                        <input type="email" class="form-control form-control-lg" placeholder="8+ characters required">
+                                        <input type="password" class="form-control form-control-lg" placeholder="8+ characters required" id="cpassword">
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                {% comment %} <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             I accept the <a href="#" title="Terms and Conditions" class="text-secondary">Terms and Conditions</a>
                                         </label>
                                     </div>
+                                </div> {% endcomment %}
+                                <div id ="notify"></div>
+                                <div class="col-12 text-center mt-4">
+                                    <button class="btn btn-lg btn-block btn-light lift text-uppercase" type="submit">SIGN UP</button
+                                    {% comment %} <a href="auth-signin.html" class="btn btn-lg btn-block btn-light lift text-uppercase" alt="SIGNUP">SIGN UP</a> {% endcomment %}
                                 </div>
                                 <div class="col-12 text-center mt-4">
-                                    <a href="auth-signin.html" class="btn btn-lg btn-block btn-light lift text-uppercase" alt="SIGNUP">SIGN UP</a>
-                                </div>
-                                <div class="col-12 text-center mt-4">
-                                    <span class="text-muted">Already have an account? <a href="/signin" title="Sign in" class="text-secondary">Sign in here</a></span>
+                                    <span class="text-muted">Already have an account? <a href="auth-signin.html" title="Sign in" class="text-secondary">Sign in here</a></span>
                                 </div>
                             </form>
                             <!-- End Form -->
@@ -110,47 +110,68 @@
 </div>
 
 <!-- Jquery Core Js -->
-<script src="../assets/bundles/libscripts.bundle.js"></script>
-
+<script src="{%static 'frontend/assets/bundles/libscripts.bundle.js'%}"></script>
 <script>
-    var b = 0;
-      $(document).ready(function(){
-                   $('#signInBtn').click(function () {
-                      // this.preventDefault();
-                      // alert($('#password').val());
-                      // e.preventDefault();
-                      $.ajax({
-                          url:"/api/v1/rest-auth/signup/",
-                          method: "POST",
-                          data: {
-                            "fname": $('#fname').val(),
-                            "email": $('#email').val(),
-                            "password": $('#password').val()
-                            "confirmpassword": $('#confirmpassword').val(),
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const regform = document.getElementById('regform')
+    regform.addEventListener('submit', (e)=>{
+    e.preventDefault();
 
-                          },
-                          dataType:'json',
-                          success :function(result){
-                              $.ajax({
-                                url:"/api/v1/rest-auth/signup/",
-                                method: "GET",
-                                dataType:'json',
-                                success :function(result){
-                                    console.log(result);
-                                    b= result;
-                                }
-                              });
-                           }
-                           function newLocation() {
-                            window.location.href="/auth-signin.html";
-                        }
-                        });
-  
-  
-                      
-                   }); }); 
-                 
-            </script>
+    var myData = {
+        email: $('#email').val(),
+        password1:$('#password').val(),
+        password2:$('#cpassword').val()
+    };
+
+    const url = "/api/v1/rest-auth/registration/";
+    const data = {
+            method: "post",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+                },
+            body: JSON.stringify(myData)
+        }
+    fetch(url, data).then(function(response) {
+            if(response.status >=200 && response.status <=299)
+                window.location.href = '/'
+            else
+            {
+                {% comment %} regform.reset(); {% endcomment %}
+                throw response
+            }
+        }).catch(function(ex) {
+            
+            ex.json().then(data =>{
+                console.log(data)
+                data = Object.values(data)
+                document.querySelector("#notify").innerHTML = `<div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <strong>Alert!</strong> ${data[0]}.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`
+            })
+            
+
+        });
+    }) ;
+</script>
+
 
 </body>
 
