@@ -52,11 +52,13 @@ class AddMemberSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    member_emails = memberRelatedField(source='assignees',read_only=True, many=True)
+    project_name = serializers.ReadOnlyField(source='project_id.name')
 
     class Meta:
         model = Task
         fields = ['id', 'project_id', 'deadline', 'subject', 'details',
-            'status', 'priority', 'assignees', 'assign_date']
+            'status', 'priority', 'assignees', 'assign_date', 'member_emails', 'project_name']
 
 
 class DiscussionThreadSerializer(TaggitSerializer, serializers.ModelSerializer):

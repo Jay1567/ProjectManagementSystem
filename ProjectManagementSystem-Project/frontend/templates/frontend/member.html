@@ -198,6 +198,26 @@
 <script src="../js/template.js"></script>
 <script src="../js/page/index.js"></script>
 
+
+<script>
+    function logout()
+    {   
+        var url = "api/v1/rest-auth/logout/"
+        const data = {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+                },
+        }
+        fetch(url,data)
+        .then(resp => {
+            window.location.href = '/'
+        })
+    }
+</script>
 </body>
 
 <!-- Mirrored from pixelwibes.com/template/my-task/html/dist/project-dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 12 Oct 2021 18:47:06 GMT -->

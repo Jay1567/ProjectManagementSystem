@@ -7,10 +7,6 @@ urlpatterns = [
     path('forget-password/', views.reset_password),
 
     path('projects', views.myProjects),
-    path('addproject', views.newProject),
-
-    path('members', views.members),
-    path('addmember', views.addMember),
 
     path('tasks', views.myTasks),
     path('addtask', views.newTask),

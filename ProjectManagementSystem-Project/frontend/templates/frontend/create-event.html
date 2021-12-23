@@ -507,10 +507,23 @@
 <!-- Jquery Page Js -->
 <script src="../js/template.js"></script>     
 <script>
-    $(function() {
-        // initialize after multiselect
-        $('#basic-form').parsley();
-    });
+    function logout()
+    {   
+        var url = "api/v1/rest-auth/logout/"
+        const data = {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+                },
+        }
+        fetch(url,data)
+        .then(resp => {
+            window.location.href = '/'
+        })
+    }
 </script>
  
 </body>

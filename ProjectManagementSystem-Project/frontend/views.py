@@ -7,8 +7,6 @@ def index(request):
 def reset_password(request):
     return render(request, 'frontend/forget_password.html')
 
-def newProject(request):
-    return render(request, 'frontend/create-project.html')
 
 def myProjects(request):
     return render(request, 'frontend/myprojects.html')
