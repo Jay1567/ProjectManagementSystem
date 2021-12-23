@@ -434,7 +434,6 @@ function renderCal() {
                     headers: {
                         "X-CSRFToken": getCookie("csrftoken"),
                         "Accept": "application/json",
-                        "Content-Type": "application/json"
                         },
                     data: {
                             "user": {{ request.user.id }},
