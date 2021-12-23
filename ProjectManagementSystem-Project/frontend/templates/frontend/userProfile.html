@@ -34,7 +34,7 @@
                 </span>
                 <span class="logo-text">PMS</span>
             </a>
-            <!-- Menu: main ul -->
+            <!-- Menu: main ul --> 
             <ul class="menu-list flex-grow-1 mt-3">
                 <li class="collapsed">
                     <a class="m-link" data-bs-toggle="collapse" data-bs-target="#dashboard-Components" href="#">
@@ -45,7 +45,7 @@
                     </ul>
                 </li>
                 <li  class="collapsed">
-                    <a class="m-link"  data-bs-toggle="collapse" data-bs-target="#project-Components" href="#">
+                    <a class="m-link active"  data-bs-toggle="collapse" data-bs-target="#project-Components" href="#">
                         <i class="icofont-briefcase"></i><span>Projects</span> <span class="arrow icofont-dotted-down ms-auto text-end fs-5"></span></a>
                     <!-- Menu: Sub menu ul -->
                     <ul class="sub-menu collapse" id="project-Components">
@@ -291,7 +291,6 @@
 
     function logout()
     {   
-        alert('hello')
         var url = "api/v1/rest-auth/logout/"
         const data = {
             method: "POST",

@@ -19,6 +19,10 @@ urlpatterns = [
     path('dashboard', views.dashboard),
 
     path('calendar', views.calendar),
-    path('userprofile', views.updateProfile)
+    path('userprofile', views.updateProfile),
+
+    path('bugreport', views.bugreport),
+    path('bugdetail', views.bugdetail),
+
 
 ]

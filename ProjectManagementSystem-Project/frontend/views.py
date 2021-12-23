@@ -19,11 +19,6 @@ def newTask(request):
 def myTasks(request):
     return render(request, 'frontend/mytasks.html')
 
-def members(request):
-    return render(request, 'frontend/projectmembers.html')
-
-def addMember(request):
-    return render(request, 'frontend/addMember.html')
 
 def calendar(request):
     return render(request, 'frontend/calendar.html')
@@ -39,3 +34,9 @@ def member(request):
 
 def updateProfile(request):
     return render(request, 'frontend/userProfile.html')
+
+def bugreport(request):
+    return render(request, 'frontend/invoices.html')
+
+def bugdetail(request):
+    return render(request, 'frontend/bugreports.html')
