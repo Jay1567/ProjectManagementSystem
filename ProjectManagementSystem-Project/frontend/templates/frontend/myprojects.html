@@ -12,6 +12,11 @@
     
     <!-- project css file  -->
     <link rel="stylesheet" href="{%static 'frontend/assets/css/my-task.style.min.css'%}">
+    <style>
+        .ctr-btn{
+            transform:translateY(110%);
+        }
+    </style>
 </head>
 <body>
 
@@ -387,22 +392,27 @@
 
             for(i in list)
             {
-                console.log(list[i])
-                var item = `
+                controls = ''
+
+                if ({{ request.user.id }} == list[i]['project_manager']){
+                    controls = `                                    
+                    <div class="btn-group ctr-btn" role="group" aria-label="Basic outlined example">
+                        <button type="submit" onclick="updateProject(document.getElementById('${i+1}').value)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editproject"><i class="icofont-edit text-success"></i></button>
+                        
+                        <button type="submit" onclick="deleteProject(document.getElementById('${i+1}').value)"class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteproject"><i class="icofont-ui-delete text-danger"></i></button>
+                    </div>
+        `
+                }
+
+                var item =`
                 <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-between mt-5">
                                 <div class="lesson_name">
                                     
-                                    <span class="small text-muted project_name fw-bold"><h6 class="mb-0 fw-bold  fs-6  mb-2">${list[i].name}
-
-                                        {% if list.project_id == request.user.id %}
-                                            (Admin)
-                                            
-                                        {% else %}
-                                            (Member) 
-                                        {% endif %}
+                                    <span class="small text-muted project_name fw-bold"><h6  id="ff" class="mb-0 fw-bold  fs-6  mb-2">${list[i].name}
+                                        
                                     </h6>
 
 
@@ -410,18 +420,8 @@
                                    <input type="hidden" value="${list[i].id}" id="pid">
 
                                    <input type = "hidden" id="${i+1}" value="${list[i].id}">
-                                </div>
-                                
-                                {% if list.project_id == request.user.id %}
-                                            
-                                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <button type="submit" onclick="updateProject(document.getElementById('${i+1}').value)" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editproject"><i class="icofont-edit text-success"></i></button>
-                                    
-                                    <button type="submit" onclick="deleteProject(document.getElementById('${i+1}').value)"class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteproject"><i class="icofont-ui-delete text-danger"></i></button>
-                                </div>
-                                {% else %}
-                                            
-                                {% endif %}
+                                </div>                                  
+                                ${controls}                                
                             </div>
                             <div class="d-flex align-items-center">
                                 <div class="avatar-list avatar-list-stacked pt-2">
@@ -433,12 +433,7 @@
                                     <img class="avatar rounded-circle" src="{%static 'frontend/assets/images/xs/avatar8.jpg'%}" alt="">
                                     <span onclick="displayMembers(this)" class="avatar rounded-circle text-center pointer sm" data-bs-toggle="modal" data-bs-target="#addUser" id="${list[i].id}" ><i class="icofont-ui-add"></i></span>
                                 </div>
-                            </div>
-
-                            
-
-
-                                  
+                            </div>   
                                 
                             <div class="row g-2 pt-4">
                                
