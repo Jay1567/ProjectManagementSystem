@@ -17,8 +17,5 @@ urlpatterns = [
     path('calendar', views.calendar),
     path('userprofile', views.updateProfile),
 
-    path('bugreport', views.bugreport),
-    path('bugdetail', views.bugdetail),
-
 
 ]
